@@ -35,4 +35,4 @@ SOURCES += \
     sessioncontroller.cpp
 
 OTHER_FILES += \
-    etc/QtWebApp.ini
+    etc/CWebServer.ini
