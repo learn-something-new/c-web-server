@@ -1,6 +1,7 @@
 #include "static.h"
 #include "server.h"
 #include "httplistener.h"
+#include "router.h"
 #include <QDir>
 
 #define APPNAME "CWebServer"
@@ -19,9 +20,15 @@ void Server::start() {
     qDebug("ServiceHelper: Starting service");
     QSettings* listenerSettings=new QSettings(configFileName,QSettings::IniFormat,app);
     listenerSettings->beginGroup("listener");
-    //listener=new HttpListener(listenerSettings,new RequestMapper(app),app);
+    listener=new HttpListener(listenerSettings,new Router(app),app);
 
     qWarning("ServiceHelper: Service has started");
+}
+
+void Server::stop() {
+    delete listener;
+
+    qWarning("ServiceHelper: Service has been stopped");
 }
 
 Server::Server(int argc, char *argv[])

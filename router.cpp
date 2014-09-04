@@ -12,11 +12,12 @@ void Router::service(HttpRequest& request, HttpResponse& response) {
 
     response.setHeader("Content-Type", "text/html; charset=ISO-8859-1");
     HttpSession session=Static::sessionStore->getSession(request,response);
-    if (!session.contains("startTime")) {
+
+    if (!session.contains("startTime"))
+    {
         response.write("<html><body>New session started. Reload this page now.</body></html>");
         session.set("startTime",QDateTime::currentDateTime());
     }
-
     else {
         QDateTime startTime=session.get("startTime").toDateTime();
         response.write("<html><body>Your session started ");
