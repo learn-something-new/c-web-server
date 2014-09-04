@@ -22,6 +22,10 @@ void Server::start() {
     fileSettings->beginGroup("docroot");
     Static::staticFileController=new StaticFileController(fileSettings,app);
 
+    QSettings* sessionSettings=new QSettings(configFileName,QSettings::IniFormat,app);
+    sessionSettings->beginGroup("sessions");
+    Static::sessionStore=new HttpSessionStore(sessionSettings,app);
+
     qDebug("ServiceHelper: Starting service");
     QSettings* listenerSettings=new QSettings(configFileName,QSettings::IniFormat,app);
     listenerSettings->beginGroup("listener");
