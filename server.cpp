@@ -2,6 +2,7 @@
 #include "server.h"
 #include "httplistener.h"
 #include "router.h"
+#include "staticfilecontroller.h"
 #include <QDir>
 
 #define APPNAME "CWebServer"
@@ -16,6 +17,10 @@ void Server::start() {
     app->setApplicationName(APPNAME);
     app->setOrganizationName(ORGANISATION);
     QString configFileName=Static::getConfigDir()+"/"+QCoreApplication::applicationName()+".ini";
+
+    QSettings* fileSettings=new QSettings(configFileName,QSettings::IniFormat,app);
+    fileSettings->beginGroup("docroot");
+    Static::staticFileController=new StaticFileController(fileSettings,app);
 
     qDebug("ServiceHelper: Starting service");
     QSettings* listenerSettings=new QSettings(configFileName,QSettings::IniFormat,app);

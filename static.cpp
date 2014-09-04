@@ -11,8 +11,6 @@
 
 QString Static::configDir=0;
 
-TemplateLoader* Static::templateLoader=0;
-
 HttpSessionStore* Static::sessionStore=0;
 
 StaticFileController* Static::staticFileController=0;

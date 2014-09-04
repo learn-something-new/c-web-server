@@ -1,6 +1,8 @@
 #ifndef ROUTER_H
 #define ROUTER_H
 
+#include "httprequest.h"
+#include "httpresponse.h"
 #include "httprequesthandler.h"
 
 class Router : public HttpRequestHandler {

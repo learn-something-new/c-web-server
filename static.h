@@ -7,7 +7,6 @@
 #define STATIC_H
 
 #include <QString>
-#include "templatecache.h"
 #include "httpsessionstore.h"
 #include "staticfilecontroller.h"
 
@@ -44,9 +43,6 @@ public:
       @see getConfigFileName()
      */
     static QString getConfigDir();
-
-    /** Cache for template files */
-    static TemplateLoader* templateLoader;
 
     /** Storage for session cookies */
     static HttpSessionStore* sessionStore;
