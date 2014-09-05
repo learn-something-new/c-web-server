@@ -7,13 +7,23 @@ Twitter::Twitter()
 {
 }
 
-int Twitter::parse(const QString reply, QString &token, QString &secret)
+int Twitter::parse(const char *reply, QString &token, QString &secret)
 {
+    printf("Parsing..\n");
+
     int rc;
-    int ok=1;
+    int ok = 1;
     char **rv = NULL;
 
-    rc = oauth_split_url_parameters(reply.toLocal8Bit().data(), &rv);
+    printf("hi");
+
+    rc = oauth_split_url_parameters(reply, &rv);
+
+    printf("me");
+
+    printf(rv[0]);
+    printf(rv[1]);
+
     qsort(rv, rc, sizeof(char *), oauth_cmpstringp);
 
     if( rc==2
@@ -25,7 +35,11 @@ int Twitter::parse(const QString reply, QString &token, QString &secret)
       secret = rv[1][19];
     }
 
-    if(rv) free(rv);
+    if(rv)
+    {
+        free(rv);
+    }
+
     return ok;
 }
 
@@ -33,12 +47,15 @@ int Twitter::authorize()
 {
     const QString request_token_uri = "https://api.twitter.com/oauth/request_token";
     const QString access_token_uri = "https://api.twitter.com/oauth/access_token";
-    const QString test_call_uri = "https://api.twitter.com/1.1/";
+    const QString test_call_uri = "https://stream.twitter.com/1.1/search/tweets.json?q=%23halifax";
     const QString c_key         = "iob3KXGiF9Lwx6U1ziFSQGzRy"; //< consumer key
     const QString c_secret      = "J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp"; //< consumer secret
 
-    QString t_key    = "13948782-1eSu5SfwluxVU6tgfb8FCjn96ED2KacV2zibHeSkW"; //< access token key
-    QString t_secret = "XII42ewjRAXhk9ijWwIUf6eYaivwWLqXcsWCoqEEwJh92"; //< access token secret
+    //QString t_key    = "13948782-1eSu5SfwluxVU6tgfb8FCjn96ED2KacV2zibHeSkW"; //< access token key
+    //QString t_secret = "XII42ewjRAXhk9ijWwIUf6eYaivwWLqXcsWCoqEEwJh92"; //< access token secret
+
+    QString t_key    = NULL; //< access token key
+    QString t_secret = NULL; //< access token secret
 
     char *req_url = NULL;
     char *postarg = NULL;
@@ -72,11 +89,13 @@ int Twitter::authorize()
 
     if (!reply)
     {
+        printf("No reply");
         return(3);
     }
 
-    if (parse(reply, t_key, t_secret))
+    if (parse(reply, t_key, t_secret));
     {
+        printf("No Parse");
         return(4);
     }
 
@@ -85,8 +104,10 @@ int Twitter::authorize()
         free(reply);
     }
 
+    printf("Request search data..\n");
+
     req_url = oauth_sign_url2(test_call_uri.toLocal8Bit().constData(),
-                              &postarg,
+                              NULL,
                               OA_HMAC,
                               NULL,
                               c_key.toLocal8Bit().constData(),
@@ -94,7 +115,7 @@ int Twitter::authorize()
                               t_key.toLocal8Bit().constData(),
                               t_secret.toLocal8Bit().constData());
 
-    reply = oauth_http_post(req_url, postarg);
+    reply = oauth_http_get(req_url, postarg);
 
     printf("query:'%s'\n",req_url);
     printf("reply:'%s'\n",reply);

@@ -7,7 +7,7 @@ class Twitter
 {
 public:
     Twitter();
-    int parse(const QString reply, QString &token, QString &secret);
+    int parse(const char *reply, QString &token, QString &secret);
     int authorize();
 };
 
