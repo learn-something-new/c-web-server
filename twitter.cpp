@@ -33,16 +33,16 @@ int Twitter::authorize()
 {
     const QString request_token_uri = "https://api.twitter.com/oauth/request_token";
     const QString access_token_uri = "https://api.twitter.com/oauth/access_token";
-    const QString test_call_uri = "http://term.ie/oauth/example/echo_api.php?method=foo%20bar&bar=baz";
-    const QString c_key         = "key"; //< consumer key
-    const QString c_secret      = "secret"; //< consumer secret
+    const QString test_call_uri = "https://api.twitter.com/1.1/";
+    const QString c_key         = "iob3KXGiF9Lwx6U1ziFSQGzRy"; //< consumer key
+    const QString c_secret      = "J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp"; //< consumer secret
 
     QString t_key    = "13948782-1eSu5SfwluxVU6tgfb8FCjn96ED2KacV2zibHeSkW"; //< access token key
     QString t_secret = "XII42ewjRAXhk9ijWwIUf6eYaivwWLqXcsWCoqEEwJh92"; //< access token secret
 
     char *req_url = NULL;
     char *postarg = NULL;
-    QString reply   = NULL;
+    char *reply   = NULL;
 
     printf("Request token..\n");
 
@@ -55,10 +55,10 @@ int Twitter::authorize()
                               NULL,
                               NULL);
 
-    reply = *oauth_http_post(req_url, postarg);
+    reply = oauth_http_post(req_url, postarg);
 
     printf("query:'%s'\n",req_url);
-    printf("reply:'%s'\n",reply.toLocal8Bit().data());
+    printf("reply:'%s'\n",reply);
 
     if (req_url)
     {
@@ -70,7 +70,7 @@ int Twitter::authorize()
         free(postarg);
     }
 
-    if (!reply.toLocal8Bit().data())
+    if (!reply)
     {
         return(3);
     }
@@ -78,6 +78,11 @@ int Twitter::authorize()
     if (parse(reply, t_key, t_secret))
     {
         return(4);
+    }
+
+    if (reply)
+    {
+        free(reply);
     }
 
     req_url = oauth_sign_url2(test_call_uri.toLocal8Bit().constData(),
@@ -89,10 +94,10 @@ int Twitter::authorize()
                               t_key.toLocal8Bit().constData(),
                               t_secret.toLocal8Bit().constData());
 
-    reply = *oauth_http_post(req_url, postarg);
+    reply = oauth_http_post(req_url, postarg);
 
     printf("query:'%s'\n",req_url);
-    printf("reply:'%s'\n",reply.toLocal8Bit().data());
+    printf("reply:'%s'\n",reply);
 
     if(req_url)
     {
@@ -104,7 +109,7 @@ int Twitter::authorize()
         free(postarg);
     }
 
-    if (strcmp(reply.toLocal8Bit().data(),"bar=baz&method=foo+bar"))
+    if (strcmp(reply,"bar=baz&method=foo+bar"))
     {
         return (5);
     }
