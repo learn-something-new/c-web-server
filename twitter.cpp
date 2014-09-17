@@ -4,16 +4,15 @@
 #include <QVariant>
 #include <oauth.h>
 
-Twitter::Twitter()
+Twitter::Twitter():
+    request_token_uri("https://api.twitter.com/oauth/request_token"),
+    access_token_uri("https://api.twitter.com/oauth/access_token"),
+    test_call_uri("https://api.twitter.com/1.1/search/tweets.json?q=%23halifax"),
+    c_key("iob3KXGiF9Lwx6U1ziFSQGzRy"),
+    c_secret("J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp")
 {
-    const QString request_token_uri = "https://api.twitter.com/oauth/request_token";
-    const QString access_token_uri = "https://api.twitter.com/oauth/access_token";
-    const QString test_call_uri = "https://api.twitter.com/1.1/search/tweets.json?q=%23halifax";
-    const QString c_key         = "iob3KXGiF9Lwx6U1ziFSQGzRy"; //< consumer key
-    const QString c_secret      = "J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp"; //< consumer secret
-
-    QString t_key    = NULL; //< access token key
-    QString t_secret = NULL; //< access token secret
+    QString t_key    = NULL;
+    QString t_secret = NULL;
 }
 
 int Twitter::parse(const char *reply, QString &token, QString &secret)
@@ -60,7 +59,7 @@ QString Twitter::search()
     char *postarg = NULL;
     char *reply   = NULL;
 
-    std::cout << "Requesting search data..\n" << std::endl;
+    std::cout << "Requesting search data..." << std::endl;
 
     req_url = oauth_sign_url2(test_call_uri.toLocal8Bit().constData(),
                               NULL,
@@ -75,6 +74,7 @@ QString Twitter::search()
 
     std::cout << "query: " << req_url << std::endl;
 
+
     if(req_url)
     {
         free(req_url);
@@ -84,7 +84,6 @@ QString Twitter::search()
     {
         free(postarg);
     }
-
     return(reply);
 }
 
