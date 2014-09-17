@@ -7,16 +7,16 @@
 Router::Router(QObject* parent)
     :HttpRequestHandler(parent)
 {
-    Twitter twitter;
-    twitter.authorize();
 }
 
 void Router::service(HttpRequest& request, HttpResponse& response) {
-    QByteArray path=request.getPath();
-    qDebug("RequestMapper: path=%s",path.data());
+    Twitter twitter;
+    QString results = twitter.search();
 
     response.setHeader("Content-Type", "text/html; charset=ISO-8859-1");
-    response.write("<html><body>Sup</body></html>");
+    response.write("<html><body>");
+    response.write(results.toLocal8Bit().data());
+    response.write("</body></html>");
 
     qDebug("RequestMapper: finished request");
 }

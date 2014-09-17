@@ -3,6 +3,7 @@
 #include "httplistener.h"
 #include "router.h"
 #include "staticfilecontroller.h"
+#include <iostream>
 #include <QDir>
 
 #define APPNAME "CWebServer"
@@ -32,6 +33,8 @@ void Server::start() {
     listener=new HttpListener(listenerSettings,new Router(app),app);
 
     qWarning("ServiceHelper: Service has started");
+
+    std::cout.flush();
 }
 
 void Server::stop() {
