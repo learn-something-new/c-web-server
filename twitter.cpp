@@ -9,10 +9,11 @@ Twitter::Twitter():
     access_token_uri("https://api.twitter.com/oauth/access_token"),
     test_call_uri("https://api.twitter.com/1.1/search/tweets.json?q=%23halifax"),
     c_key("iob3KXGiF9Lwx6U1ziFSQGzRy"),
-    c_secret("J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp")
+    c_secret("J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp"),
+    t_key(NULL),
+    t_secret(NULL)
 {
-    QString t_key    = NULL;
-    QString t_secret = NULL;
+    std::cout << "Initalizing Twitter..." << rc << std::endl;
 }
 
 int Twitter::parse(const char *reply, QString &token, QString &secret)
@@ -22,9 +23,6 @@ int Twitter::parse(const char *reply, QString &token, QString &secret)
     char **rv = NULL;
 
     rc = oauth_split_url_parameters(reply, &rv);
-
-    std::cout << "Response variables: " << rc << std::endl;
-
     qsort(rv, rc, sizeof(char *), oauth_cmpstringp);
 
     if( rc==3
@@ -37,9 +35,6 @@ int Twitter::parse(const char *reply, QString &token, QString &secret)
 
       token = token.mid(12);
       secret = secret.mid(19);
-
-      std::cout << "oauth_token: " << token.toLocal8Bit().data() << std::endl;
-      std::cout << "oauth_token_secret: " << secret.toLocal8Bit().data() << std::endl;
     }
 
     if(rv)
