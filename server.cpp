@@ -12,7 +12,6 @@
 
 HttpListener* listener;
 
-
 void Server::start() {
     QCoreApplication* app = application();
     app->setApplicationName(APPNAME);

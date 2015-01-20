@@ -11,7 +11,6 @@ public:
     QString search();
 private:
     int parse(const char *reply, QString &token, QString &secret);
-
     QString t_key;
     QString t_secret;
     const QString request_token_uri;

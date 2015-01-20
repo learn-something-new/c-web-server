@@ -9,11 +9,9 @@ Twitter::Twitter():
     access_token_uri("https://api.twitter.com/oauth/access_token"),
     test_call_uri("https://api.twitter.com/1.1/search/tweets.json?q=%23halifax"),
     c_key("iob3KXGiF9Lwx6U1ziFSQGzRy"),
-    c_secret("J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp"),
-    t_key(NULL),
-    t_secret(NULL)
+    c_secret("J4tPj5CSY2a4OwMyDkJjHLLLVFs673x2GerXNxCZwFoVUwy2zp")
 {
-    std::cout << "Initalizing Twitter..." << rc << std::endl;
+    std::cout << "Initalizing Twitter..." << std::endl;
 }
 
 int Twitter::parse(const char *reply, QString &token, QString &secret)
