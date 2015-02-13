@@ -23,4 +23,4 @@
 
 # QT Creator files
 *.pro
-*.pro.user
+*.pro.user*
