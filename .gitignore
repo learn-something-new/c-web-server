@@ -22,5 +22,4 @@
 .DS_Store
 
 # QT Creator files
-*.pro
 *.pro.user*
